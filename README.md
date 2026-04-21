@@ -231,14 +231,16 @@ the `TODO for Students` section inside each docstring carefully.
 
 1. Click **Fork** in the top-right corner of the GitHub repository page to
    create your own copy.
-2. Clone your fork locally:
+2.
+   1. If running in Codespaces, simply create a new Codespace on Main and then skip to **Step 7.3**.
+   2. If running locally, clone your fork and then continue to **Step 7.2**:
 
    ```bash
    git clone https://github.com/<your-username>/devops-homework.git
    cd devops-homework
    ```
 
-### 7.2 Create a Virtual Environment and Install Dependencies
+### 7.2 (Only if running locally) Create a Virtual Environment and Install Dependencies
 
 ```bash
 python -m venv .venv
@@ -256,7 +258,7 @@ Run the test suite before writing any code:
 pytest test_calculators.py -v
 ```
 
-You should see output similar to:
+You should see several test failures
 
 ```
 PASSED  test_calculators.py::TestPERC::test_perc_negative_all_low_risk
@@ -342,7 +344,7 @@ git push origin main
 
 ---
 
-## 8. Running Tests Locally
+## 8. Running Tests Locally (Optional)
 
 ```bash
 # Run all tests with verbose output
@@ -361,35 +363,13 @@ pytest test_calculators.py -x
 pytest test_calculators.py -v --tb=long
 ```
 
-### Running the Flask App (Optional)
+### Running the Flask App
 
 ```bash
 python app.py
 ```
 
-Then use `curl` or a tool like [Postman](https://www.postman.com/) to call the
-API:
-
-```bash
-# PERC example
-curl -X POST http://127.0.0.1:5000/api/perc \
-  -H "Content-Type: application/json" \
-  -d '{
-    "age": 40, "heart_rate": 80, "o2_sat": 97,
-    "hemoptysis": false, "estrogen_use": false,
-    "prior_dvt_pe": false, "unilateral_leg_swelling": false,
-    "surgery_trauma_4wks": false
-  }'
-
-# CHA2DS2-VASc example
-curl -X POST http://127.0.0.1:5000/api/chads_vasc \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chf": false, "hypertension": true, "age": 70,
-    "diabetes": false, "stroke_tia": false,
-    "vascular_disease": true, "sex": "female"
-  }'
-```
+Then open the application in a browser to see it function.
 
 ---
 
@@ -405,13 +385,12 @@ curl -X POST http://127.0.0.1:5000/api/chads_vasc \
 
 ### Submission
 
-Submit via the course LMS:
+Submit via D2L
 
 1. A link to your forked GitHub repository (ensure it is **public** or the
    instructor has been added as a collaborator).
 2. A screenshot of the **GitHub Actions workflow run** showing all tests
    passing (the green ✅).
-3. Your written reflection as a PDF or in the LMS text box.
 
 ---
 

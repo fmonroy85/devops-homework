@@ -5,11 +5,11 @@ Clinical Risk Score Calculators – Flask Application
 A REST API and simple web front-end for five widely used clinical risk
 score calculators:
 
-  • PERC Rule     – PE Rule-Out Criteria
-  • HEART Score   – Major Adverse Cardiac Events
-  • CHA₂DS₂-VASc – Atrial Fibrillation Stroke Risk
-  • ASCVD Risk    – 10-Year Cardiovascular Risk (Pooled Cohort Equations)
-  • PECARN        – Pediatric Head Injury Decision Rule
+  • PERC Rule     - PE Rule-Out Criteria
+  • HEART Score   - Major Adverse Cardiac Events
+  • CHA₂DS₂-VASc - Atrial Fibrillation Stroke Risk
+  • ASCVD Risk    - 10-Year Cardiovascular Risk (Pooled Cohort Equations)
+  • PECARN        - Pediatric Head Injury Decision Rule
 
 Run the development server:
     python app.py
@@ -19,7 +19,7 @@ Then open http://127.0.0.1:5000 in your browser.
 
 import os
 
-from flask import Flask, jsonify, render_template_string, request
+from flask import Flask, jsonify, request, send_from_directory
 
 from calculators import (
     calculate_ascvd_risk,
@@ -31,79 +31,15 @@ from calculators import (
 
 app = Flask(__name__)
 
-# ---------------------------------------------------------------------------
-# Landing page (inline template – no separate templates/ directory needed)
-# ---------------------------------------------------------------------------
-
-_INDEX_HTML = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clinical Risk Score Calculators</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 860px;
-           margin: 40px auto; padding: 0 20px; color: #333; }
-    h1   { color: #2c5f8a; }
-    h3   { margin-bottom: 4px; }
-    .card { background: #f4f7fb; border-left: 4px solid #2c5f8a;
-            border-radius: 4px; padding: 14px 18px; margin: 14px 0; }
-    code { background: #e8edf2; border-radius: 3px; padding: 2px 5px; }
-    pre  { background: #e8edf2; border-radius: 4px;
-           padding: 10px; overflow-x: auto; }
-  </style>
-</head>
-<body>
-  <h1>🏥 Clinical Risk Score Calculators</h1>
-  <p>
-    REST API endpoints for five evidence-based clinical decision tools.
-    Send a JSON <code>POST</code> request to the relevant endpoint and
-    receive a scored result.
-  </p>
-
-  <div class="card">
-    <h3>POST /api/perc</h3>
-    <p><strong>PE Rule-Out Criteria (PERC)</strong></p>
-    <p>Rules out pulmonary embolism in low-pretest-probability patients.</p>
-  </div>
-
-  <div class="card">
-    <h3>POST /api/heart</h3>
-    <p><strong>HEART Score</strong></p>
-    <p>Risk-stratifies chest pain patients for major adverse cardiac events.</p>
-  </div>
-
-  <div class="card">
-    <h3>POST /api/chads_vasc</h3>
-    <p><strong>CHA₂DS₂-VASc Score</strong></p>
-    <p>Guides anticoagulation in non-valvular atrial fibrillation.</p>
-  </div>
-
-  <div class="card">
-    <h3>POST /api/ascvd</h3>
-    <p><strong>10-Year ASCVD Risk</strong></p>
-    <p>Estimates 10-year cardiovascular risk using the ACC/AHA Pooled Cohort
-       Equations.</p>
-  </div>
-
-  <div class="card">
-    <h3>POST /api/pecarn</h3>
-    <p><strong>PECARN Pediatric Head Injury</strong></p>
-    <p>Identifies children at very low risk of clinically important traumatic
-       brain injury (PECARN decision rule).</p>
-  </div>
-
-  <p>See <code>README.md</code> for full API documentation and assignment
-     instructions.</p>
-</body>
-</html>
-"""
-
 
 @app.route("/")
 def index():
-    return render_template_string(_INDEX_HTML)
+    return send_from_directory(app.root_path, "index.html")
+
+
+@app.route("/styles.css")
+def styles():
+    return send_from_directory(app.root_path, "styles.css")
 
 
 # ---------------------------------------------------------------------------

@@ -11,7 +11,7 @@ Pre-implemented calculators:
     - calculate_chads_vasc(): CHA₂DS₂-VASc Score (AFib stroke risk)
     - calculate_ascvd_risk(): 10-Year ASCVD Risk (Pooled Cohort Equations)
 
-Student TODO – implement these two calculators:
+Student TODO - implement these two calculators:
     - calculate_heart_score(): HEART Score for chest pain risk stratification
     - calculate_pecarn()      : PECARN Pediatric Head Injury Decision Rule
 """
@@ -20,7 +20,7 @@ import math
 
 
 # =============================================================================
-# PERC – Pulmonary Embolism Rule-Out Criteria  (pre-implemented)
+# PERC - Pulmonary Embolism Rule-Out Criteria  (pre-implemented)
 # =============================================================================
 
 def calculate_perc(age, heart_rate, o2_sat, hemoptysis, estrogen_use,
@@ -56,9 +56,9 @@ def calculate_perc(age, heart_rate, o2_sat, hemoptysis, estrogen_use,
     Returns
     -------
     dict
-        ``score``         – int  : number of positive criteria (0–8).
-        ``perc_negative`` – bool : True when score == 0 (PE ruled out).
-        ``interpretation``– str  : plain-language clinical interpretation.
+        ``score``         - int  : number of positive criteria (0-8).
+        ``perc_negative`` - bool : True when score == 0 (PE ruled out).
+        ``interpretation``- str  : plain-language clinical interpretation.
     """
     criteria = [
         age >= 50,
@@ -92,7 +92,7 @@ def calculate_perc(age, heart_rate, o2_sat, hemoptysis, estrogen_use,
 
 
 # =============================================================================
-# CHA₂DS₂-VASc – Atrial Fibrillation Stroke Risk  (pre-implemented)
+# CHA₂DS₂-VASc - Atrial Fibrillation Stroke Risk  (pre-implemented)
 # =============================================================================
 
 def calculate_chads_vasc(chf, hypertension, age, diabetes, stroke_tia,
@@ -105,14 +105,14 @@ def calculate_chads_vasc(chf, hypertension, age, diabetes, stroke_tia,
 
     Scoring
     -------
-    C – Congestive heart failure (or LVEF < 40 %)        : +1
-    H – Hypertension (treated or untreated)              : +1
-    A₂– Age ≥ 75                                         : +2
-    D – Diabetes mellitus                                : +1
-    S₂– Prior stroke, TIA, or thromboembolism            : +2
-    V – Vascular disease (prior MI, PAD, aortic plaque)  : +1
-    A – Age 65–74                                        : +1
-    Sc– Female sex                                       : +1
+    C - Congestive heart failure (or LVEF < 40 %)        : +1
+    H - Hypertension (treated or untreated)              : +1
+    A₂- Age ≥ 75                                         : +2
+    D - Diabetes mellitus                                : +1
+    S₂- Prior stroke, TIA, or thromboembolism            : +2
+    V - Vascular disease (prior MI, PAD, aortic plaque)  : +1
+    A - Age 65–74                                        : +1
+    Sc- Female sex                                       : +1
 
     Parameters
     ----------
@@ -134,8 +134,8 @@ def calculate_chads_vasc(chf, hypertension, age, diabetes, stroke_tia,
     Returns
     -------
     dict
-        ``score``         – int : CHA₂DS₂-VASc score (0–9).
-        ``interpretation``– str : anticoagulation recommendation.
+        ``score``         - int : CHA₂DS₂-VASc score (0-9).
+        ``interpretation``- str : anticoagulation recommendation.
     """
     score = 0
 
@@ -176,7 +176,7 @@ def calculate_chads_vasc(chf, hypertension, age, diabetes, stroke_tia,
 
 
 # =============================================================================
-# ASCVD – 10-Year Cardiovascular Risk (ACC/AHA Pooled Cohort Equations)
+# ASCVD - 10-Year Cardiovascular Risk (ACC/AHA Pooled Cohort Equations)
 #          (pre-implemented)
 # =============================================================================
 
@@ -192,7 +192,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
     Parameters
     ----------
     age : int
-        Patient age in years (validated range 40–79).
+        Patient age in years (validated range 40-79).
     sex : str
         ``'male'`` or ``'female'``.
     race : str
@@ -213,8 +213,8 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
     Returns
     -------
     dict
-        ``risk_percentage`` – float : 10-year ASCVD risk as a percentage.
-        ``interpretation``  – str   : statin therapy recommendation.
+        ``risk_percentage`` - float : 10-year ASCVD risk as a percentage.
+        ``interpretation``  - str   : statin therapy recommendation.
 
     Raises
     ------
@@ -233,7 +233,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
     race_lower = race.lower()
 
     if sex_lower == "female" and race_lower == "white":
-        # White Women – Pooled Cohort Equation coefficients
+        # White Women - Pooled Cohort Equation coefficients
         coeff_sum = (
             -29.799 * ln_age
             + 4.884 * (ln_age ** 2)
@@ -250,7 +250,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
         mean_coeff = -29.18
 
     elif sex_lower == "female" and race_lower == "aa":
-        # African American Women – Pooled Cohort Equation coefficients
+        # African American Women - Pooled Cohort Equation coefficients
         coeff_sum = (
             17.1141 * ln_age
             + 0.9396 * ln_total_chol
@@ -268,7 +268,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
         mean_coeff = 86.61
 
     elif sex_lower == "male" and race_lower == "white":
-        # White Men – Pooled Cohort Equation coefficients
+        # White Men - Pooled Cohort Equation coefficients
         coeff_sum = (
             12.344 * ln_age
             + 11.853 * ln_total_chol
@@ -284,7 +284,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
         mean_coeff = 61.18
 
     elif sex_lower == "male" and race_lower == "aa":
-        # African American Men – Pooled Cohort Equation coefficients
+        # African American Men - Pooled Cohort Equation coefficients
         coeff_sum = (
             2.469 * ln_age
             + 0.302 * ln_total_chol
@@ -330,7 +330,7 @@ def calculate_ascvd_risk(age, sex, race, total_cholesterol, hdl_cholesterol,
 
 
 # =============================================================================
-# HEART Score – Major Adverse Cardiac Events  (STUDENT TODO)
+# HEART Score - Major Adverse Cardiac Events  (STUDENT TODO)
 # =============================================================================
 
 def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
@@ -359,7 +359,7 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
     age_score : int
         Age category:
           0 = Age < 45
-          1 = Age 45–64
+          1 = Age 45-64
           2 = Age ≥ 65
     risk_factors : int
         Known cardiovascular risk factors
@@ -373,15 +373,15 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
     troponin : int
         Initial troponin level relative to the assay's normal limit:
           0 = ≤ normal limit
-          1 = 1–3 × normal limit
-          2 = > 3 × normal limit
+          1 = 1-3 x normal limit
+          2 = > 3 x normal limit
 
     Returns
     -------
     dict
-        ``score``         – int : total HEART score (0–10).
-        ``risk_level``    – str : ``'low'``, ``'moderate'``, or ``'high'``.
-        ``interpretation``– str : clinical management recommendation.
+        ``score``         - int : total HEART score (0-10).
+        ``risk_level``    - str : ``'low'``, ``'moderate'``, or ``'high'``.
+        ``interpretation``- str : clinical management recommendation.
 
     Raises
     ------
@@ -390,9 +390,9 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
 
     Score Interpretation
     --------------------
-    0–3  : Low risk      (~1.7 % MACE) – consider early discharge
-    4–6  : Moderate risk (~12 % MACE)  – observe; serial troponins
-    7–10 : High risk     (~65 % MACE)  – early invasive strategy
+    0-3  : Low risk      (~1.7 % MACE) - consider early discharge
+    4-6  : Moderate risk (~12 % MACE)  - observe; serial troponins
+    7-10 : High risk     (~65 % MACE)  - early invasive strategy
 
     TODO for Students
     -----------------
@@ -404,9 +404,9 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
          If any value is outside this range, raise a ``ValueError``.
       2. Sum all five parameters to compute the total HEART score.
       3. Determine the risk level:
-           score 0–3  → ``'low'``
-           score 4–6  → ``'moderate'``
-           score 7–10 → ``'high'``
+           score 0-3  → ``'low'``
+           score 4-6  → ``'moderate'``
+           score 7-10 → ``'high'``
       4. Build the ``interpretation`` string with the clinical
          recommendation matching the risk level.
       5. Return a dict containing ``'score'``, ``'risk_level'``, and
@@ -420,7 +420,7 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
 
 
 # =============================================================================
-# PECARN – Pediatric Head Injury Decision Rule  (STUDENT TODO)
+# PECARN - Pediatric Head Injury Decision Rule  (STUDENT TODO)
 # =============================================================================
 
 def calculate_pecarn(age_months, gcs, altered_mental_status,
@@ -442,7 +442,7 @@ def calculate_pecarn(age_months, gcs, altered_mental_status,
     age_months : int
         Patient age in months.
     gcs : int
-        Glasgow Coma Scale score (valid range 3–15).
+        Glasgow Coma Scale score (valid range 3-15).
     altered_mental_status : bool
         Agitation, somnolence, repetitive questioning, or slowed response
         to verbal communication.
@@ -477,10 +477,10 @@ def calculate_pecarn(age_months, gcs, altered_mental_status,
     Returns
     -------
     dict
-        ``risk_level``   – str : ``'high'``, ``'intermediate'``, or
+        ``risk_level``   - str : ``'high'``, ``'intermediate'``, or
                                  ``'low'``.
-        ``recommendation``– str : CT management recommendation.
-        ``interpretation``– str : detailed plain-language explanation.
+        ``recommendation``- str : CT management recommendation.
+        ``interpretation``- str : detailed plain-language explanation.
 
     Raises
     ------
