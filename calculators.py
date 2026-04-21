@@ -412,11 +412,28 @@ def calculate_heart_score(history, ecg, age_score, risk_factors, troponin):
       5. Return a dict containing ``'score'``, ``'risk_level'``, and
          ``'interpretation'``.
     """
-    # TODO: Students — implement this function
-    raise NotImplementedError(
-        "calculate_heart_score() is not yet implemented. "
-        "Please implement this function according to the docstring."
-    )
+    # Validate inputs
+    params = [history, ecg, age_score, risk_factors, troponin]
+    if not all(isinstance(p, int) and 0 <= p <= 2 for p in params):
+        raise ValueError("All parameters must be integers with values 0, 1, or 2.")
+    
+    score = sum(params)
+    
+    if score <= 3:
+        risk_level = 'low'
+        interpretation = f"HEART Score: {score} (Low risk, ~1.7% MACE). Consider early discharge with appropriate follow-up."
+    elif score <= 6:
+        risk_level = 'moderate'
+        interpretation = f"HEART Score: {score} (Moderate risk, ~12% MACE). Observe with serial troponins and ECGs."
+    else:
+        risk_level = 'high'
+        interpretation = f"HEART Score: {score} (High risk, ~65% MACE). Early invasive strategy recommended."
+    
+    return {
+        "score": score,
+        "risk_level": risk_level,
+        "interpretation": interpretation,
+    }
 
 
 # =============================================================================
@@ -556,8 +573,58 @@ def calculate_pecarn(age_months, gcs, altered_mental_status,
                            preference'
            low          → 'CT scan NOT recommended'
     """
-    # TODO: Students — implement this function
-    raise NotImplementedError(
-        "calculate_pecarn() is not yet implemented. "
-        "Please implement this function according to the docstring."
-    )
+    if not (3 <= gcs <= 15):
+        raise ValueError("GCS must be between 3 and 15 inclusive.")
+    
+    if age_months < 24:
+        high_risk = gcs < 15 or palpable_skull_fracture or altered_mental_status
+        if high_risk:
+            risk_level = 'high'
+            recommendation = 'CT scan recommended'
+            interpretation = "High risk of clinically important traumatic brain injury. CT scan is recommended."
+        else:
+            intermediate_risk = (loss_of_consciousness or 
+                                 scalp_hematoma_location == 'non-frontal' or 
+                                 severe_mechanism or 
+                                 vomiting)
+            if intermediate_risk:
+                risk_level = 'intermediate'
+                recommendation = ('CT scan versus observation: individualise based on '
+                                  'physician experience, multiple vs isolated findings, '
+                                  'worsening symptoms, age < 3 months, parental preference')
+                interpretation = ("Intermediate risk. Decision for CT scan should be individualized "
+                                  "considering clinical factors and parental preferences.")
+            else:
+                risk_level = 'low'
+                recommendation = 'CT scan NOT recommended'
+                interpretation = ("Very low risk of clinically important traumatic brain injury (<0.02%). "
+                                  "CT scan is not recommended.")
+    else:  # age >= 24 months
+        high_risk = gcs < 15 or signs_basal_skull_fracture or altered_mental_status
+        if high_risk:
+            risk_level = 'high'
+            recommendation = 'CT scan recommended'
+            interpretation = "High risk of clinically important traumatic brain injury. CT scan is recommended."
+        else:
+            intermediate_risk = (loss_of_consciousness or 
+                                 vomiting or 
+                                 severe_mechanism or 
+                                 severe_headache)
+            if intermediate_risk:
+                risk_level = 'intermediate'
+                recommendation = ('CT scan versus observation: individualise based on '
+                                  'physician experience, multiple vs isolated findings, '
+                                  'worsening symptoms, age < 3 months, parental preference')
+                interpretation = ("Intermediate risk. Decision for CT scan should be individualized "
+                                  "considering clinical factors and parental preferences.")
+            else:
+                risk_level = 'low'
+                recommendation = 'CT scan NOT recommended'
+                interpretation = ("Very low risk of clinically important traumatic brain injury (<0.02%). "
+                                  "CT scan is not recommended.")
+    
+    return {
+        "risk_level": risk_level,
+        "recommendation": recommendation,
+        "interpretation": interpretation,
+    }
